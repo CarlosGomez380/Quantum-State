@@ -40,18 +40,25 @@ public class Particle {
         if (ketVector.length == points){
             Complex[] answ= new Complex[points];
             Complex value=new Complex(0,0);
+            double norm=0, norm2=0;
             for(int i=0; i<points; i++){
                 ketVector[i].setImag(ketVector[i].getImag()*(-1));
+                norm= Math.pow(vector[i].getReal(),2)+ Math.pow(vector[i].getImag(),2) + norm;
+                norm2= Math.pow(ketVector[i].getReal(),2)+Math.pow(ketVector[i].getImag(),2) + norm2;
             }
+            norm=Math.sqrt(norm);
+            norm2= Math.sqrt(norm2);
             for (int i=0; i<points; i++){
-                answ[i]= new Complex((vector[i].getReal()* ketVector[i].getReal())- (vector[i].getImag()*ketVector[i].getImag()),
-                                (vector[i].getReal()*ketVector[i].getImag()) + (vector[i].getImag()*ketVector[i].getReal()));
+                answ[i]= new Complex((ketVector[i].getReal()* vector[i].getReal())- (ketVector[i].getImag()*vector[i].getImag()),
+                                (ketVector[i].getReal()*vector[i].getImag()) + (ketVector[i].getImag()*vector[i].getReal()));
             }
             
             for(int i=0; i<points; i++){
                 value.setReal(value.getReal()+answ[i].getReal());
                 value.setImag(value.getImag()+answ[i].getImag());
             }
+            value.setReal(value.getReal()/(norm*norm2));
+            value.setImag(value.getImag()/(norm*norm2));
             return value;
         }
         else{

@@ -68,13 +68,34 @@ public class ParticleTest {
      * @throws java.lang.Exception
      */
     @Test
-    public void testAmplitud() throws Exception {
+    public void testAmplitud2() throws Exception {
         Particle v= new Particle(2);
         v.setVector(0,new Complex(Math.sqrt(2)/2,0));
         v.setVector(1,new Complex(0,Math.sqrt(2)/2));
         Complex[] c= new Complex[2];
         c[0]= new Complex(0,Math.sqrt(2)/2);
         c[1]= new Complex(-Math.sqrt(2)/2,0);
+        Complex answ=v.amplitud(c);
+        Complex d= new Complex(0,-1);
+        BigDecimal bd = new BigDecimal(answ.getImag()).setScale(5, RoundingMode.HALF_UP);
+        double newInput = bd.doubleValue();
+        answ.setImag(newInput);
+        assertEquals(d,answ);
+    }
+     
+    
+    /**
+     * Test of amplitud method, of class Particle.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testAmplitud() throws Exception {
+        Particle v= new Particle(2);
+        v.setVector(0,new Complex(1,0));
+        v.setVector(1,new Complex(0,-1));
+        Complex[] c= new Complex[2];
+        c[0]= new Complex(0,1);
+        c[1]= new Complex(1,0);
         Complex answ=v.amplitud(c);
         Complex d= new Complex(0,-1);
         BigDecimal bd = new BigDecimal(answ.getImag()).setScale(5, RoundingMode.HALF_UP);
