@@ -42,7 +42,7 @@ public class ParticleTest {
         v.setVector(1,new Complex(0,-2));
         v.setVector(2,new Complex(0,1));
         v.setVector(3,new Complex(2,0));
-        BigDecimal bd = new BigDecimal(v.norm()).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal bd = new BigDecimal(v.norm(v.getVector())).setScale(4, RoundingMode.HALF_UP);
         double newInput = bd.doubleValue();
         assertEquals(4.3589, newInput, 0.0);
     }

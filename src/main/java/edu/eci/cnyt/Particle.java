@@ -13,10 +13,10 @@ public class Particle {
     /*
     * Calculate the norm of a state vector
     */
-    public double norm(){
+    public double norm(Complex[] vectors){
         double value=0;
         for(int i=0; i< points; i++){
-            value= Math.pow(vector[i].getReal(),2) + Math.pow(vector[i].getImag(),2)+value;
+            value= Math.pow(vectors[i].getReal(),2) + Math.pow(vectors[i].getImag(),2)+value;
         }
         return Math.sqrt(value);
     }
@@ -26,7 +26,7 @@ public class Particle {
     */
     public double findPosition(int position) throws QuantumStateException{
         if (position <= points){
-            return (Math.pow(vector[position].getReal(),2)+ Math.pow(vector[position].getImag(),2))/Math.pow(norm(),2);
+            return (Math.pow(vector[position].getReal(),2)+ Math.pow(vector[position].getImag(),2))/Math.pow(norm(vector),2);
         }
         else{
             throw new QuantumStateException("this position doesn't exist");
@@ -40,14 +40,12 @@ public class Particle {
         if (ketVector.length == points){
             Complex[] answ= new Complex[points];
             Complex value=new Complex(0,0);
-            double norm=0, norm2=0;
             for(int i=0; i<points; i++){
                 ketVector[i].setImag(ketVector[i].getImag()*(-1));
-                norm= Math.pow(vector[i].getReal(),2)+ Math.pow(vector[i].getImag(),2) + norm;
-                norm2= Math.pow(ketVector[i].getReal(),2)+Math.pow(ketVector[i].getImag(),2) + norm2;
             }
-            norm=Math.sqrt(norm);
-            norm2= Math.sqrt(norm2);
+            
+            double norm1= norm(vector), norm2= norm(ketVector);
+            
             for (int i=0; i<points; i++){
                 answ[i]= new Complex((ketVector[i].getReal()* vector[i].getReal())- (ketVector[i].getImag()*vector[i].getImag()),
                                 (ketVector[i].getReal()*vector[i].getImag()) + (ketVector[i].getImag()*vector[i].getReal()));
@@ -57,8 +55,9 @@ public class Particle {
                 value.setReal(value.getReal()+answ[i].getReal());
                 value.setImag(value.getImag()+answ[i].getImag());
             }
-            value.setReal(value.getReal()/(norm*norm2));
-            value.setImag(value.getImag()/(norm*norm2));
+            
+            value.setReal(value.getReal()/(norm1*norm2));
+            value.setImag(value.getImag()/(norm1*norm2));
             return value;
         }
         else{
